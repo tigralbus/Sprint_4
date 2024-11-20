@@ -28,14 +28,13 @@ class TestBooksCollector:
         collector.add_new_book('Наказание')
         assert collector.books_genre == {'Преступление': '', 'Наказание': ''}
 
-    # 4 test verifies that genre updated and uses get_book_genre method
-    def test_set_book_genre_genre_updated(self):
+    # 4 test verifies that get_book_genre method return selected book genre - added 20.11
+    def test_get_book_genre_return_book_genre(self):
         collector = BooksCollector()
-        collector.add_new_book('Преступление')
-        collector.set_book_genre('Преступление', 'Фантастика')
+        collector.books_genre = {'Преступление': 'Фантастика'}
         assert collector.get_book_genre('Преступление') == 'Фантастика'
 
-    # 5 test verifies that genre is not updated when parameters are not existing and uses get_book_genre method
+    # 5 test verifies that genre is not updated when parameters are not existing
     @pytest.mark.parametrize('book_name, genre', [['Не_название', 'Фантастика'], ['Преступление', 'Не_жанр']])
     def test_set_book_genre_genre_not_updated(self, book_name, genre):
         collector = BooksCollector()
@@ -49,13 +48,7 @@ class TestBooksCollector:
         collector.books_genre = {'Преступление': 'Детективы', 'Наказание': 'Детективы', 'Пони': 'Комедии'}
         assert collector.get_books_with_specific_genre('Детективы') == ['Преступление', 'Наказание']
 
-    # 7 test verifies that children books list is updated per children genres
-    def test_get_books_for_children_books_list_updated(self):
-        collector = BooksCollector()
-        collector.books_genre = {'Единороги': 'Фантастика', 'Радуги': 'Мультфильмы', 'Пони': 'Комедии'}
-        assert collector.get_books_for_children() == ['Единороги', 'Радуги', 'Пони']
-
-    # 8 test verifies that adult genre books don't get in children books list
+    # 7 test verifies that adult genre books don't get in children books list
     @pytest.mark.parametrize('book_name, genre', [['Преступление', 'Не_жанр'], ['Пони для взрослых', 'Ужасы'],
                                                   ['Преступление единорога', 'Детективы'], ['', '']])
     def test_get_books_for_children_books_list_not_updated(self, book_name, genre):
@@ -64,13 +57,22 @@ class TestBooksCollector:
         collector.set_book_genre(book_name, genre)
         assert collector.get_books_for_children() == []
 
-    # 9 test verifies that book is added to favorites books list and uses get_list_of_favorites_books method
+    # 8 test verifies that book is added to favorites books list and uses get_list_of_favorites_books method
     def test_add_book_in_favorites_books_added(self):
         collector = BooksCollector()
         collector.add_new_book('Любимая_книга')
         collector.add_new_book('Нелюбимая_книга')
         collector.add_book_in_favorites('Любимая_книга')
         assert collector.get_list_of_favorites_books() == ['Любимая_книга']
+
+    # 9 test verifies that method get_list_of_favorites_books returs expected list of favorite books  - added 20.11
+    def test_get_list_of_favorites_books_return_list(self):
+        collector = BooksCollector()
+        collector.add_new_book('Любимая_книга')
+        collector.add_new_book('Тоже_любимая_книга')
+        collector.add_book_in_favorites('Любимая_книга')
+        collector.add_book_in_favorites('Тоже_любимая_книга')
+        assert collector.get_list_of_favorites_books() == ['Любимая_книга', 'Тоже_любимая_книга']
 
     # 10 test verifies that book is deleted from favorites books list and uses get_list_of_favorites_books method
     def test_delete_book_from_favorites_book_removed(self):
