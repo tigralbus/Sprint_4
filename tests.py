@@ -83,3 +83,9 @@ class TestBooksCollector:
         collector.add_book_in_favorites('Нелюбимая_книга')
         collector.delete_book_from_favorites('Нелюбимая_книга')
         assert collector.get_list_of_favorites_books() == ['Любимая_книга']
+
+    # 11 test verifies that books collection returned
+    def test_get_books_genre_collection_returned(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Преступление': 'Детективы', 'Наказание': 'Детективы', 'Пони': 'Комедии'}
+        assert collector.get_books_genre() == {'Преступление': 'Детективы', 'Наказание': 'Детективы', 'Пони': 'Комедии'}

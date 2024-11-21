@@ -40,3 +40,7 @@ description: test verifies that method get_list_of_favorites_books returns expec
 10 test: 
 verified method: delete_book_from_favorites
 description: test verifies that book is deleted from favorites books list
+
+11 test:
+verified method: get_books_genre
+description: test verifies that books collection returned
